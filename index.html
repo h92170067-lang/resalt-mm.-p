@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة نتائج الامتحانات</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; text-align: center; padding: 15px; margin: 0; }
+        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); max-width: 480px; margin: auto; }
+        .ministry-title { font-size: 16px; color: #7f8c8d; font-weight: bold; margin-bottom: 5px; }
+        h2 { margin-top: 5px; color: #2c3e50; font-size: 20px; margin-bottom: 20px; }
+        input[type="text"] { width: 70%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; font-size: 16px; }
+        button { background-color: #27ae60; color: white; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-bottom: 20px; }
+        button:hover { background-color: #219150; }
+        
+        .result-box { display: none; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.05); background-color: #fff; margin-top: 15px; }
+        
+        .info-row { display: flex; border-bottom: 1px solid #edf1f2; background-color: #f9f9f9; }
+        .info-label { width: 35%; padding: 10px; font-weight: bold; color: #555; border-left: 1px solid #ddd; }
+        .info-value { width: 65%; padding: 10px; font-weight: bold; color: #000; text-align: right; }
+
+        .section-header { background-color: #f0f4f8; color: #1a237e; font-weight: bold; padding: 12px; font-size: 15px; text-align: center; }
+        .result-table { width: 100%; border-collapse: collapse; }
+        .result-table td { padding: 14px 12px; font-size: 16px; color: #000; border-bottom: 1px solid #edf1f2; }
+        .result-table td:first-child { width: 65%; text-align: right; font-weight: bold; border-left: 3px solid #00bcd4; }
+        .result-table td:last-child { width: 35%; text-align: center; font-weight: 500; }
+        .total-row { background-color: #ebf7ee; }
+        .total-row td:first-child { color: #27ae60 !important; font-weight: bold; border-left: 3px solid #27ae60 !important; }
+        .total-row td:last-child { color: #000; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="ministry-title">وزارة التربية والتعليم</div>
+    <h2>استعلام عن نتيجة الشهادة الإعدادية</h2>
+    <input type="text" id="seatingNumber" placeholder="أدخل رقم الجلوس">
+    <br>
+    <button onclick="checkResult()">عرض النتيجة</button>
+
+    <div class="result-box" id="resultBox">
+        <div class="info-row"><div class="info-label">اسم الطالب</div><div class="info-value" id="stuName">---</div></div>
+        <div class="info-row"><div class="info-label">الإدارة</div><div class="info-value">حلوان</div></div>
+        <div class="info-row"><div class="info-label">المدرسة</div><div class="info-value">المستقبل الرسمية المتميزة للغات "3"</div></div>
+        
+        <table class="result-table">
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+function checkResult() {
+    var seatingNum = document.getElementById("seatingNumber").value.trim();
+    var resultBox = document.getElementById("resultBox");
+    var tbody = document.getElementById("tableBody");
+    var stuNameDisplay = document.getElementById("stuName");
+
+    // تم تحديث الاسم هنا
+    var students = {
+        "259088": "كنزي محمد سيد لملوم",
+        "259089": "كنزي عثمان عمر",
+        "259087": "لجين أشرف عبد الله",
+        "default": "فرح أحمد سليمان" 
+    };
+
+    var فرح_جروب = ["259080", "259081", "259082", "259083", "259084", "259085", "259086", "259090", "259091"];
+
+    if(seatingNum === "") { alert("أدخل رقم الجلوس"); return; }
+
+    var studentName = students[seatingNum] || (فرح_جروب.includes(seatingNum) ? students["default"] : null);
+
+    if (!studentName) {
+        alert("رقم الجلوس غير صحيح!");
+        resultBox.style.display = "none";
+        return;
+    }
+
+    stuNameDisplay.innerText = studentName;
+    
+    var scores = [
+        {m: "درجات المواد الدراسية", d: "", isHeader: true},
+        {m: "اللغة العربية", d: "74"}, {m: "الدراسات الاجتماعية", d: "57"},
+        {m: "اللغة الإنجليزية", d: "38"}, {m: "الرياضيات", d: "53"},
+        {m: "العلوم", d: "35"}, {m: "المجموع الكلي", d: "257 درجة", isTotal: true},
+        {m: "مواد لا تضاف للمجموع", d: "", isHeader: true},
+        {m: "لغة أجنبية أولى", d: "36"}, {m: "لغة أجنبية ثانية", d: "35"},
+        {m: "التربية الدينية", d: "38"}, {m: "حاسب آلي", d: "15"}, {m: "تربية فنية", d: "34"}
+    ];
+
+    tbody.innerHTML = ""; 
+    scores.forEach(function(row) {
+        var tr = document.createElement("tr");
+        if (row.isHeader) {
+            tr.innerHTML = `<td colspan="2" class="section-header">${row.m}</td>`;
+        } else {
+            if (row.isTotal) tr.className = "total-row";
+            tr.innerHTML = `<td>${row.m}</td><td>${row.d}</td>`;
+        }
+        tbody.appendChild(tr);
+    });
+    resultBox.style.display = "block";
+}
+</script>
+</body>
+</html>
