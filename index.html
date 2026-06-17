@@ -5,28 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة نتائج الامتحانات</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; text-align: center; padding: 15px; margin: 0; }
-        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); max-width: 480px; margin: auto; }
-        .ministry-title { font-size: 16px; color: #7f8c8d; font-weight: bold; margin-bottom: 5px; }
-        h2 { margin-top: 5px; color: #2c3e50; font-size: 20px; margin-bottom: 20px; }
-        input[type="text"] { width: 70%; padding: 12px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; text-align: center; font-size: 16px; }
-        button { background-color: #27ae60; color: white; padding: 10px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-bottom: 20px; }
-        button:hover { background-color: #219150; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: 480px;
+            box-sizing: border-box;
+        }
+        .ministry-title {
+            font-size: 14px;
+            color: #95a5a6;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        h2 {
+            margin: 0 0 25px 0;
+            color: #2c3e50;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 85%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 16px;
+            background-color: #fafafa;
+            transition: border 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #27ae60;
+            outline: none;
+        }
+        button {
+            background-color: #219653;
+            color: white;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #1a7a43;
+        }
         
-        .result-box { display: none; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.05); background-color: #fff; margin-top: 15px; }
+        .result-wrapper {
+            display: none;
+            width: 100%;
+            border: 1px solid #eef2f5;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
         
-        .info-row { display: flex; border-bottom: 1px solid #edf1f2; background-color: #f9f9f9; }
-        .info-label { width: 35%; padding: 10px; font-weight: bold; color: #555; border-left: 1px solid #ddd; }
-        .info-value { width: 65%; padding: 10px; font-weight: bold; color: #000; text-align: right; }
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+        
+        .main-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f8;
+            text-align: right;
+        }
+        
+        .main-table td:first-child {
+            text-align: center;
+            font-weight: bold;
+            width: 30%;
+        }
+        
+        .border-sep td:first-child {
+            border-right: 2px solid #2fadde;
+        }
 
-        .section-header { background-color: #f0f4f8; color: #1a237e; font-weight: bold; padding: 12px; font-size: 15px; text-align: center; }
-        .result-table { width: 100%; border-collapse: collapse; }
-        .result-table td { padding: 14px 12px; font-size: 16px; color: #000; border-bottom: 1px solid #edf1f2; }
-        .result-table td:first-child { width: 65%; text-align: right; font-weight: bold; border-left: 3px solid #00bcd4; }
-        .result-table td:last-child { width: 35%; text-align: center; font-weight: 500; }
-        .total-row { background-color: #ebf7ee; }
-        .total-row td:first-child { color: #27ae60 !important; font-weight: bold; border-left: 3px solid #27ae60 !important; }
-        .total-row td:last-child { color: #000; font-weight: bold; }
+        .label-cell {
+            color: #7f8c8d;
+            background-color: #fcfdfe;
+            width: 30%;
+        }
+        
+        .value-cell {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .section-header {
+            background-color: #edf7fc;
+            color: #2c3e50;
+            font-weight: bold;
+            text-align: center !important;
+            border-right: 4px solid #2fadde;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        
+        .total-row {
+            background-color: #edfcf2;
+            color: #219653;
+        }
+        .total-row td {
+            color: #219653 !important;
+            font-weight: bold !important;
+        }
     </style>
 </head>
 <body>
@@ -34,73 +135,185 @@
 <div class="container">
     <div class="ministry-title">وزارة التربية والتعليم</div>
     <h2>استعلام عن نتيجة الشهادة الإعدادية</h2>
+    
     <input type="text" id="seatingNumber" placeholder="أدخل رقم الجلوس">
     <br>
     <button onclick="checkResult()">عرض النتيجة</button>
 
-    <div class="result-box" id="resultBox">
-        <div class="info-row"><div class="info-label">اسم الطالب</div><div class="info-value" id="stuName">---</div></div>
-        <div class="info-row"><div class="info-label">الإدارة</div><div class="info-value">حلوان</div></div>
-        <div class="info-row"><div class="info-label">المدرسة</div><div class="info-value">المستقبل الرسمية المتميزة للغات "3"</div></div>
-        
-        <table class="result-table">
-            <tbody id="tableBody"></tbody>
+    <div class="result-wrapper" id="resultWrapper">
+        <table class="main-table">
+            <tr>
+                <td class="value-cell" id="studentName">-</td>
+                <td class="label-cell">اسم الطالب</td>
+            </tr>
+            <tr>
+                <td class="value-cell">حلوان</td>
+                <td class="label-cell">الإدارة</td>
+            </tr>
+            <tr>
+                <td class="value-cell">المستقبل 3 الرسمية لغات</td>
+                <td class="label-cell">المدرسة</td>
+            </tr>
+            
+            <tbody id="dynamicScores">
+            </tbody>
         </table>
     </div>
 </div>
 
 <script>
+if (!localStorage.getItem('attemptsCount')) {
+    localStorage.setItem('attemptsCount', '0');
+}
+if (!localStorage.getItem('usedGroupNumbers')) {
+    localStorage.setItem('usedGroupNumbers', JSON.stringify([]));
+}
+
 function checkResult() {
     var seatingNum = document.getElementById("seatingNumber").value.trim();
-    var resultBox = document.getElementById("resultBox");
-    var tbody = document.getElementById("tableBody");
-    var stuNameDisplay = document.getElementById("stuName");
+    var wrapper = document.getElementById("resultWrapper");
+    var nameSpan = document.getElementById("studentName");
+    var tbody = document.getElementById("dynamicScores");
+    
+    var attempts = parseInt(localStorage.getItem('attemptsCount'));
+    var usedGroupNumbers = JSON.parse(localStorage.getItem('usedGroupNumbers'));
 
-    // تم تحديث الاسم هنا
-    var students = {
-        "259088": "كنزي محمد سيد لملوم",
-        "259089": "كنزي عثمان عمر",
-        "259087": "لجين أشرف عبد الله",
-        "default": "فرح أحمد سليمان" 
-    };
-
-    var فرح_جروب = ["259080", "259081", "259082", "259083", "259084", "259085", "259086", "259090", "259091"];
-
-    if(seatingNum === "") { alert("أدخل رقم الجلوس"); return; }
-
-    var studentName = students[seatingNum] || (فرح_جروب.includes(seatingNum) ? students["default"] : null);
-
-    if (!studentName) {
-        alert("رقم الجلوس غير صحيح!");
-        resultBox.style.display = "none";
+    if(seatingNum === "") {
+        alert("من فضلك أدخل رقم الجلوس أولاً");
         return;
     }
 
-    stuNameDisplay.innerText = studentName;
-    
-    var scores = [
-        {m: "درجات المواد الدراسية", d: "", isHeader: true},
-        {m: "اللغة العربية", d: "74"}, {m: "الدراسات الاجتماعية", d: "57"},
-        {m: "اللغة الإنجليزية", d: "38"}, {m: "الرياضيات", d: "53"},
-        {m: "العلوم", d: "35"}, {m: "المجموع الكلي", d: "257 درجة", isTotal: true},
-        {m: "مواد لا تضاف للمجموع", d: "", isHeader: true},
-        {m: "لغة أجنبية أولى", d: "36"}, {m: "لغة أجنبية ثانية", d: "35"},
-        {m: "التربية الدينية", d: "38"}, {m: "حاسب آلي", d: "15"}, {m: "تربية فنية", d: "34"}
-    ];
+    var فرح_جروب = ["259080", "259081", "259082", "259083", "259084", "259085", "259086", "259089", "259090", "259091"];
 
+    // التعديل هنا: تم تغيير الحد الأقصى للمحاولات الكلية إلى 5
+    if (attempts >= 5) {
+        alert("فشل المحاولة! لقد استهلكت أقصى عدد مسموح به لرؤية نتائج مختلفة.");
+        wrapper.style.display = "none";
+        return;
+    }
+
+    if (فرح_جروب.includes(seatingNum)) {
+        if (usedGroupNumbers.includes(seatingNum)) {
+            alert("انتهت المحاولات المتوفرة لهذا الرقم!");
+            wrapper.style.display = "none";
+            return;
+        }
+    }
+
+    var studentData = null;
+
+    if (seatingNum === "259088") {
+        studentData = {
+            name: "كنزي محمد سيد",
+            scores: [
+                {m: "درجات المواد الدراسية", d: "", isHeader: true},
+                {m: "اللغة العربية", d: "74"},
+                {m: "الدراسات الاجتماعية", d: "57"},
+                {m: "اللغة الإنجليزية", d: "38"},
+                {m: "الرياضيات", d: "53"},
+                {m: "العلوم", d: "35"},
+                {m: "المجموع الكلي", d: "257 درجة", isTotal: true},
+                {m: "مواد لا تضاف للمجموع", d: "", isHeader: true},
+                {m: "لغة أجنبية أولى", d: "36"},
+                {m: "لغة أجنبية ثانية", d: "35"},
+                {m: "التربية الدينية", d: "38"},
+                {m: "الحاسب الآلي", d: "15"},
+                {m: "التربية الفنية", d: "34"}
+            ]
+        };
+    } 
+    else if (seatingNum === "259089") {
+        studentData = {
+            name: "كنزي عثمان عمر",
+            scores: [
+                {m: "درجات المواد الدراسية", d: "", isHeader: true},
+                {m: "اللغة العربية", d: "70"},
+                {m: "الدراسات الاجتماعية", d: "52"},
+                {m: "اللغة الإنجليزية", d: "33"},
+                {m: "الرياضيات", d: "50"},
+                {m: "العلوم", d: "30"},
+                {m: "المجموع الكلي", d: "235 درجة", isTotal: true},
+                {m: "مواد لا تضاف للمجموع", d: "", isHeader: true},
+                {m: "لغة أجنبية أولى", d: "32"},
+                {m: "لغة أجنبية ثانية", d: "35"},
+                {m: "التربية الدينية", d: "35"},
+                {m: "الحاسب الآلي", d: "15"},
+                {m: "التربية الفنية", d: "34"}
+            ]
+        };
+    } 
+    else if (seatingNum === "259087") {
+        studentData = {
+            name: "لجين أشرف عبد الله",
+            scores: [
+                {m: "درجات المواد الدراسية", d: "", isHeader: true},
+                {m: "اللغة العربية", d: "74"},
+                {m: "الدراسات الاجتماعية", d: "56"},
+                {m: "اللغة الإنجليزية", d: "36"},
+                {m: "الرياضيات", d: "51"},
+                {m: "العلوم", d: "35"},
+                {m: "المجموع الكلي", d: "252 درجة", isTotal: true},
+                {m: "مواد لا تضاف للمجموع", d: "", isHeader: true},
+                {m: "لغة أجنبية أولى", d: "35"},
+                {m: "لغة أجنبية ثانية", d: "35"},
+                {m: "التربية الدينية", d: "36"},
+                {m: "الحاسب الآلي", d: "15"},
+                {m: "التربية الفنية", d: "34"}
+            ]
+        };
+    } 
+    else if (فرح_جروب.includes(seatingNum)) {
+        studentData = {
+            name: "فرح أحمد سليمان",
+            scores: [
+                {m: "درجات المواد الدراسية", d: "", isHeader: true},
+                {m: "اللغة العربية", d: "70"},
+                {m: "الدراسات الاجتماعية", d: "55"},
+                {m: "اللغة الإنجليزية", d: "35"},
+                {m: "الرياضيات", d: "50"},
+                {m: "العلوم", d: "33"},
+                {m: "المجموع الكلي", d: "246 درجة", isTotal: true},
+                {m: "مواد لا تضاف للمجموع", d: "", isHeader: true},
+                {m: "لغة أجنبية أولى", d: "35"},
+                {m: "لغة أجنبية ثانية", d: "30"},
+                {m: "التربية الدينية", d: "35"},
+                {m: "الحاسب الآلي", d: "14"},
+                {m: "التربية الفنية", d: "35"}
+            ]
+        };
+        usedGroupNumbers.push(seatingNum);
+        localStorage.setItem('usedGroupNumbers', JSON.stringify(usedGroupNumbers));
+    } 
+    else {
+        alert("رقم الجلوس غير صحيح!");
+        wrapper.style.display = "none";
+        return;
+    }
+
+    attempts += 1;
+    localStorage.setItem('attemptsCount', attempts.toString());
+
+    nameSpan.innerText = studentData.name;
     tbody.innerHTML = ""; 
-    scores.forEach(function(row) {
+
+    studentData.scores.forEach(function(row) {
         var tr = document.createElement("tr");
+        
         if (row.isHeader) {
             tr.innerHTML = `<td colspan="2" class="section-header">${row.m}</td>`;
+        } else if (row.isTotal) {
+            tr.className = "total-row border-sep";
+            tr.innerHTML = `<td>${row.d}</td><td>${row.m}</td>`;
         } else {
-            if (row.isTotal) tr.className = "total-row";
-            tr.innerHTML = `<td>${row.m}</td><td>${row.d}</td>`;
+            tr.className = "border-sep";
+            tr.innerHTML = `<td>${row.d}</td><td>${row.m}</td>`;
         }
         tbody.appendChild(tr);
     });
-    resultBox.style.display = "block";
+
+    wrapper.style.display = "block";
 }
 </script>
+
 </body>
-</html>
+        </html>
